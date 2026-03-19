@@ -24,13 +24,9 @@ jobs:
 
           Restart-Service -Name TermService -Force
 
-      - name: Create RDP User with Easy Password
+      - name: Create RDP User with Fixed Password
         run: |
-          $adjectives = @("sunny","happy","brave","cool","fast","calm","kind","bold")
-          $nouns      = @("tiger","apple","river","cloud","stone","eagle","flame","piano")
-          $number     = Get-Random -Minimum 10 -Maximum 99
-
-          $password   = (Get-Random -InputObject $adjectives) + (Get-Random -InputObject $nouns) + $number
+          $password = "Nube123!"
           $securePass = ConvertTo-SecureString $password -AsPlainText -Force
 
           if (Get-LocalUser -Name "RDP" -ErrorAction SilentlyContinue) {
