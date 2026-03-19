@@ -1,4 +1,4 @@
-- name: Create RDP User with Secure Password
+- name: Create RDP User with Easy Password
   run: |
     $adjectives = @("sunny","happy","brave","cool","fast","calm","kind","bold")
     $nouns      = @("tiger","apple","river","cloud","stone","eagle","flame","piano")
@@ -6,6 +6,11 @@
 
     $password   = (Get-Random -InputObject $adjectives) + (Get-Random -InputObject $nouns) + $number
     $securePass = ConvertTo-SecureString $password -AsPlainText -Force
+
+    if (Get-LocalUser -Name "RDP" -ErrorAction SilentlyContinue) {
+        Remove-LocalUser -Name "RDP"
+    }
+
     New-LocalUser -Name "RDP" -Password $securePass -AccountNeverExpires
     Add-LocalGroupMember -Group "Administrators" -Member "RDP"
     Add-LocalGroupMember -Group "Remote Desktop Users" -Member "RDP"
